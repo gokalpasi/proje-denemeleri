@@ -1,0 +1,13 @@
+bmt\model\User.class
+bmt\service\UserService.class
+bmt\ui\LoginView.class
+bmt\ui\RegisterView.class
+bmt\App.class
+bmt\ui\ForgotPasswordView.class
+bmt\model\Word.class
+bmt\model\Word$ReviewStage.class
+bmt\database\MongoDBConnection.class
+bmt\ui\ReviewView.class
+bmt\service\WordService.class
+bmt\ui\StatisticsView.class
+bmt\ui\MainView.class
