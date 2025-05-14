@@ -56,7 +56,7 @@ public class MainView {
         welcomeText.setFont(Font.font("Tahoma", FontWeight.NORMAL, 20));
 
         Button addWordBtn = new Button("Yeni Kelime Ekle");
-        Button startTestBtn = new Button("Teste Başla");
+        Button startTestBtn = new Button("Quize Başla");
         Button viewStatsBtn = new Button("İstatistikler");
 
         centerContent.getChildren().addAll(welcomeText, addWordBtn, startTestBtn, viewStatsBtn);
