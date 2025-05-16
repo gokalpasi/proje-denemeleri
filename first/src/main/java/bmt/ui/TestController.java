@@ -39,7 +39,11 @@ public class TestController {
     private List<Button> optionButtons;
     private int questionsAnswered = 0;
     private int correctAnswers = 0;
-    private final int DEFAULT_DIFFICULTY = 1; // Varsayılan zorluk seviyesi
+    private int difficulty = 1; // Varsayılan zorluk seviyesi
+
+    public void setDifficulty(int difficulty) {
+        this.difficulty = difficulty;
+    }
 
     public void initialize() {
         testService = new TestService();
@@ -48,7 +52,7 @@ public class TestController {
     }
 
     private void loadNewQuestion() {
-        currentQuestion = testService.generateQuizQuestion(DEFAULT_DIFFICULTY);
+        currentQuestion = testService.generateQuizQuestion(difficulty);
 
         if (currentQuestion == null) {
             lblQuestion.setText("Soru yüklenemedi.");

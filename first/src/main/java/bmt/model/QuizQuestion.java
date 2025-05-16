@@ -1,18 +1,22 @@
 package bmt.model;
 
+import java.util.ArrayList;
 import java.util.List;
 
 /**
  * Test ekranı için bir soru ve cevap seçeneklerini tutar.
- * @param correctWord Doğru kelime nesnesi.
  * @param englishWord Sorulacak İngilizce kelime.
- * @param allTurkishOptions Karıştırılmış Türkçe seçenekler (biri doğru).
  * @param correctTurkishAnswer Doğru Türkçe cevap.
+ * @param wrongAnswers Yanlış Türkçe cevaplar.
  */
 public record QuizQuestion(
-    Word correctWord,
     String englishWord,
-    List<String> allTurkishOptions,
-    String correctTurkishAnswer
+    String correctTurkishAnswer,
+    List<String> wrongAnswers
 ) {
+    public List<String> allTurkishOptions() {
+        List<String> options = new ArrayList<>(wrongAnswers);
+        options.add(correctTurkishAnswer);
+        return options;
+    }
 } 

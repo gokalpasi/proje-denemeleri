@@ -149,17 +149,63 @@ public class MainView {
 
     private void startTestScreen() {
         try {
-            FXMLLoader loader = new FXMLLoader(getClass().getResource("/bmt/ui/TestView.fxml"));
-            Parent root = loader.load();
-            Stage testStage = new Stage();
-            testStage.setScene(new Scene(root));
-            testStage.setTitle("Kelime Testi");
-            testStage.initOwner(primaryStage);
-            testStage.initModality(Modality.APPLICATION_MODAL);
-            testStage.showAndWait();
-        } catch (IOException e) {
+            // Zorluk seviyesi seçim dialogu
+            Dialog<Integer> difficultyDialog = new Dialog<>();
+            difficultyDialog.setTitle("Zorluk Seviyesi");
+            difficultyDialog.setHeaderText("Lütfen test zorluk seviyesini seçin");
+
+            // Dialog içeriği
+            GridPane grid = new GridPane();
+            grid.setHgap(10);
+            grid.setVgap(10);
+            grid.setPadding(new Insets(20, 150, 10, 10));
+
+            ComboBox<Integer> difficultyComboBox = new ComboBox<>();
+            difficultyComboBox.getItems().addAll(1, 2, 3, 4, 5, 6);
+            difficultyComboBox.setPromptText("Zorluk Seviyesi Seçin");
+            grid.add(new Label("Zorluk Seviyesi:"), 0, 0);
+            grid.add(difficultyComboBox, 1, 0);
+
+            difficultyDialog.getDialogPane().setContent(grid);
+
+            ButtonType startButtonType = new ButtonType("Teste Başla", ButtonBar.ButtonData.OK_DONE);
+            difficultyDialog.getDialogPane().getButtonTypes().addAll(startButtonType, ButtonType.CANCEL);
+
+            difficultyDialog.setResultConverter(dialogButton -> {
+                if (dialogButton == startButtonType) {
+                    return difficultyComboBox.getValue();
+                }
+                return null;
+            });
+
+            difficultyDialog.showAndWait().ifPresent(difficulty -> {
+                if (difficulty == null) {
+                    showAlert(Alert.AlertType.WARNING, "Uyarı", "Lütfen bir zorluk seviyesi seçin.");
+                    return;
+                }
+
+                try {
+                    FXMLLoader loader = new FXMLLoader(getClass().getResource("/bmt/ui/TestView.fxml"));
+                    Parent root = loader.load();
+                    
+                    TestController controller = loader.getController();
+                    controller.setDifficulty(difficulty);
+                    controller.initialize();
+                    
+                    Stage testStage = new Stage();
+                    testStage.setScene(new Scene(root));
+                    testStage.setTitle("Kelime Testi - Zorluk: " + difficulty);
+                    testStage.initOwner(primaryStage);
+                    testStage.initModality(Modality.APPLICATION_MODAL);
+                    testStage.show();
+                } catch (IOException e) {
+                    e.printStackTrace();
+                    showAlert(Alert.AlertType.ERROR, "Hata", "Test ekranı yüklenemedi: " + e.getMessage());
+                }
+            });
+        } catch (Exception e) {
             e.printStackTrace();
-            showAlert(Alert.AlertType.ERROR, "Hata", "Test ekranı yüklenemedi: " + e.getMessage());
+            showAlert(Alert.AlertType.ERROR, "Hata", "Bir hata oluştu: " + e.getMessage());
         }
     }
 
